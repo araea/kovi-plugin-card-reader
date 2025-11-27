@@ -156,16 +156,16 @@ mod parser {
                 cursor.read_exact(&mut data_buf)?;
 
                 // tEXt 格式: Keyword + Null separator (0x00) + Text
-                if let Some(null_pos) = data_buf.iter().position(|&b| b == 0) {
-                    if let Ok(keyword) = std::str::from_utf8(&data_buf[..null_pos]) {
-                        let text_bytes = &data_buf[null_pos + 1..];
-                        if let Ok(text) = std::str::from_utf8(text_bytes) {
-                            let key_lower = keyword.to_lowercase();
-                            if key_lower == "ccv3" {
-                                ccv3_data = Some(text.to_string());
-                            } else if key_lower == "chara" {
-                                chara_data = Some(text.to_string());
-                            }
+                if let Some(null_pos) = data_buf.iter().position(|&b| b == 0)
+                    && let Ok(keyword) = std::str::from_utf8(&data_buf[..null_pos])
+                {
+                    let text_bytes = &data_buf[null_pos + 1..];
+                    if let Ok(text) = std::str::from_utf8(text_bytes) {
+                        let key_lower = keyword.to_lowercase();
+                        if key_lower == "ccv3" {
+                            ccv3_data = Some(text.to_string());
+                        } else if key_lower == "chara" {
+                            chara_data = Some(text.to_string());
                         }
                     }
                 }
